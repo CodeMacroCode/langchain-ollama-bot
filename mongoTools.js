@@ -6,6 +6,7 @@ await client.connect();
 const db = client.db();
 const children = db.collection("children");
 const attendance = db.collection("attendance");
+const parents = db.collection("parents");
 
 export const schoolTools = [
   {
@@ -46,6 +47,16 @@ export const schoolTools = [
       return absentChildren.length
         ? absentChildren.map((c) => c.childName).join(", ")
         : `No absentees on ${input}`;
+    },
+  },
+  {
+    name: "getParentByChildName",
+    description: "Get parent details by child's name",
+    func: async (input) => {
+      const child = await children.findOne({ childName: input });
+      if (!child) return `No child found: ${input}`;
+      const parent = await parents.findOne({ childId: child._id });
+      return parent ? JSON.stringify(parent) : `No parent found for ${input}`;
     },
   },
 ];
