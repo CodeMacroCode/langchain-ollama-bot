@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { Ollama } from "@langchain/community/llms/ollama";
 import { initializeAgentExecutorWithOptions } from "langchain/agents";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai"; // 👈 use Google Generative AI
 import { DynamicTool } from "@langchain/core/tools";
 import { schoolTools } from "./mongoTools.js";
 
@@ -11,10 +12,17 @@ app.use(cors());
 app.use(express.json());
 
 // Setup Ollama with Gemma 3
-const llm = new Ollama({
-  model: "gemma3:4b",
-  baseUrl: "http://localhost:11434",
-});
+// const llm = new Ollama({
+//   model: "gemma3:4b",
+//   baseUrl: "http://localhost:11434",
+// });
+
+// Initialize Gemini 2.0 Flash model
+// const llm = new ChatGoogleGenerativeAI({
+//   model: "gemini-2.0-flash",
+//   apiKey: process.env.GOOGLE_API_KEY,
+//   temperature: 0,
+// });
 
 // Convert raw tools to LangChain dynamic tools
 const tools = schoolTools.map(
@@ -28,7 +36,7 @@ const tools = schoolTools.map(
 
 // Initialize Agent
 const executor = await initializeAgentExecutorWithOptions(tools, llm, {
-  agentType: "zero-shot-react-description",
+  agentType: "chat-conversational-react-description",
   verbose: true,
 });
 

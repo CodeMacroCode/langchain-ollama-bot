@@ -14,6 +14,7 @@
   "dependencies": {
     "@langchain/community": "^0.3.45",
     "@langchain/core": "^0.3.57",
+    "@langchain/google-genai": "^0.2.10",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
